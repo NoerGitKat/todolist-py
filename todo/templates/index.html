@@ -1,6 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-
-<h1>Current Todo's</h1>
+<h1>Homepage</h1>
 
 {% if user.is_authenticated %}
 <h4>Logged in as <b>{{user.username}}</b></h4>
@@ -10,7 +9,7 @@
 </form>
 {% else %}
 
-<a href="#">Sign Up</a>
-<a href="#">Login</a>
+<a href="{% url 'signupuser' %}">Sign Up</a>
+<a href="{% url 'loginuser' %}">Login</a>
 
 {% endif %} {% endblock %}

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from .forms import TodoForm
+from .models import Todo
 
 # Create your views here.
 
@@ -51,11 +52,19 @@ def loginuser(request):
 
 
 def currenttodos(request):
-    return render(request, 'currenttodos.html')
+    todos = Todo.objects.filter(user=request.user, completedAt__isnull=True)
+    return render(request, 'currenttodos.html', {'currenttodos': todos})
 
 
 def createtodo(request):
     if request.method == 'GET':
         return render(request, 'createtodo.html', {'form': TodoForm()})
-    # else:
-    #     return render(request, 'createtodo.html', {'error': 'You need to POST the todo!'})
+    else:
+        try:
+            form = TodoForm(request.POST)
+            newtodo = form.save(commit=False)
+            newtodo.user = request.user
+            newtodo.save()
+            return redirect('currenttodos')
+        except ValueError:
+            return render(request, 'createtodo.html', {'form': TodoForm(), 'error': 'You just broke the form! Pass in normal data please.'})

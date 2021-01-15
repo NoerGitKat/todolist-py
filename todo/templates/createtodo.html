@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Current Todo's</h1>
+<h1>Create todo!</h1>
 
 {% if user.is_authenticated %}
 <h4>Logged in as <b>{{user.username}}</b></h4>
@@ -8,11 +8,15 @@
   {% csrf_token %}
   <button>Logout</button>
 </form>
-
-<a href="{% url 'createtodo' %}">Create a new todo!</a>
 {% else %}
 
 <a href="#">Sign Up</a>
 <a href="#">Login</a>
 
-{% endif %} {% endblock %}
+{% endif %}
+
+<form method="POST">
+  {% csrf_token%} {{form.as_p}}
+  <button type="submit">Create</button>
+</form>
+{% endblock %}

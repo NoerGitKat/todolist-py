@@ -28,5 +28,6 @@ urlpatterns = [
     path('logout/', views.logoutuser, name="logoutuser"),
 
     # Todo
-    path('currenttodos/', views.currenttodos, name='currenttodos')
+    path('currenttodos/', views.currenttodos, name='currenttodos'),
+    path('create/', views.createtodo, name='createtodo')
 ]

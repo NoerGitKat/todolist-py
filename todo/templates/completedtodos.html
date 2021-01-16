@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Completed Todos</h1>
+
+<ul>
+  {% for todo in todos %}
+  <li>
+    {{todo.title}} - <i>Completed at {{ todo.completedAt|date:'M j Y H:i'}}</i>
+  </li>
+  {% endfor%}
+</ul>
+
+{% endblock %}

@@ -14,10 +14,12 @@
 <ul>
   {% for todo in currenttodos %}
   <li>
+    <a href='{% url 'viewtodo' todo.id %}'>
     {% if todo.important %}
     <b> {% endif %} {{ todo.title }} {% if todo.important %} </b>
     {% endif %} - {% if todo.description %}
     <i>{{todo.description}}</i> {%endif%}
+    </a>
   </li>
   {% endfor %}
 </ul>

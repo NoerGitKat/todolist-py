@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .forms import TodoForm
 from .models import Todo
@@ -32,6 +33,7 @@ def signupuser(request):
             return render(request, 'signupuser.html', {'pageTitle': 'Signup Page', 'form': UserCreationForm(), 'error': 'Passwords do not match!'})
 
 
+@login_required
 def logoutuser(request):
     if request.method == 'POST':
         logout(request)
@@ -57,6 +59,7 @@ def currenttodos(request):
     return render(request, 'currenttodos.html', {'currenttodos': todos})
 
 
+@login_required
 def createtodo(request):
     if request.method == 'GET':
         return render(request, 'createtodo.html', {'form': TodoForm()})
@@ -71,6 +74,7 @@ def createtodo(request):
             return render(request, 'createtodo.html', {'form': TodoForm(), 'error': 'You just broke the form! Pass in normal data please.'})
 
 
+@login_required
 def viewtodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == "GET":
@@ -85,6 +89,7 @@ def viewtodo(request, todo_pk):
             return render(request, 'viewtodo.html', {'todo': todo, 'form': form, 'error': 'Bad information!'})
 
 
+@login_required
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == "POST":
@@ -93,6 +98,7 @@ def completetodo(request, todo_pk):
         return redirect('currenttodos')
 
 
+@login_required
 def deletetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == 'POST':
@@ -100,6 +106,7 @@ def deletetodo(request, todo_pk):
         return redirect('currenttodos')
 
 
+@login_required
 def completedtodos(request):
     todos = Todo.objects.filter(user=request.user, completedAt__isnull=False)
     if request.method == 'GET':
